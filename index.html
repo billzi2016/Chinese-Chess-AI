@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chinese-Chess-AI (象眼 WASM 版)</title>
+    <link rel="stylesheet" href="./styles/main.css">
+</head>
+<body>
+    <div id="content">
+        <!-- 顶部标题与比分徽章栏 -->
+        <div id="content-title" class="dfr aic">
+            <div id="black-counter" class="dfr aic jcc title-counter">
+                <span class="title-counter-data">0</span>
+            </div>
+            <h1 id="title" class="dfr aic jcc">
+                <span>中</span>
+                <span>国</span>
+                <span>象</span>
+                <span>棋</span>
+            </h1>
+            <div id="red-counter" class="dfr aic jcc title-counter">
+                <span class="title-counter-data">0</span>
+            </div>
+        </div>
+
+        <!-- 游戏主对局与侧边栏布局 -->
+        <div id="game-layout">
+            <!-- 棋盘与多级菜单外框 -->
+            <div id="border-frame" class="dfr aic jcc">
+                <!-- 浮动多级菜单遮罩 -->
+                <div id="board-options" class="dfr aic jcc">
+                    <!-- 主菜单 -->
+                    <div id="menu" class="board-option-type dfr aic jcc">
+                        <div id="menu-content" class="board-option-type-content dfr aic jcc">
+                            <div id="startbtn" class="board-option-type-btn dfr aic jcc">
+                                <h1>开始</h1>
+                            </div>
+                            <div id="helpbtn" class="board-option-type-btn dfr aic jcc">
+                                <h1>说明</h1>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 模式选择菜单 -->
+                    <div id="menu-mode" class="board-option-type dfr aic jcc hide">
+                        <div id="menu-mode-content" class="board-option-type-content dfr aic jcc">
+                            <div id="pvpbtn" class="board-option-type-btn dfr aic jcc">
+                                <h1>本机双人</h1>
+                            </div>
+                            <div id="pvebtn" class="board-option-type-btn dfr aic jcc">
+                                <h1>人机对战</h1>
+                            </div>
+                            <div id="evebtn" class="board-option-type-btn dfr aic jcc">
+                                <h1>机机对战</h1>
+                            </div>
+                        </div>
+                        <div class="returnbtn board-option-type-btn dfr aic jcc" id="return-to-main">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M14.5 1.5a.5.5 0 0 1 .5.5v4.8a2.5 2.5 0 0 1-2.5 2.5H2.707l3.347 3.346a.5.5 0 0 1-.708.708l-4.2-4.2a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 8.3H12.5A1.5 1.5 0 0 0 14 6.8V2a.5.5 0 0 1 .5-.5z"/>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <!-- 人机先手选择菜单 -->
+                    <div id="menu-mode-pve" class="board-option-type dfr aic jcc hide">
+                        <div id="menu-mode-content" class="board-option-type-content dfr aic jcc">
+                            <div id="pfbtn" class="board-option-type-btn dfr aic jcc">
+                                <h1>玩家先走(执红)</h1>
+                            </div>
+                            <div id="efbtn" class="board-option-type-btn dfr aic jcc">
+                                <h1>电脑先走(执黑)</h1>
+                            </div>
+                        </div>
+                        <div class="returnbtn board-option-type-btn dfr aic jcc" id="return-to-mode">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M14.5 1.5a.5.5 0 0 1 .5.5v4.8a2.5 2.5 0 0 1-2.5 2.5H2.707l3.347 3.346a.5.5 0 0 1-.708.708l-4.2-4.2a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 8.3H12.5A1.5 1.5 0 0 0 14 6.8V2a.5.5 0 0 1 .5-.5z"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 象眼象棋渲染容器 -->
+                <div id="board-container"></div>
+            </div>
+
+            <!-- 侧边 AI 搜索评分日志面板 -->
+            <aside id="ai-panel">
+                <div id="ai-panel-title">AI 搜索评分</div>
+                <div id="ai-panel-subtitle">记录每一步的搜索深度、节点数、耗时、NPS 和 UCCI 评估分数。</div>
+                <div id="ai-table-wrap">
+                    <table id="ai-stats-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>方</th>
+                                <th>来源</th>
+                                <th>落子</th>
+                                <th>深度</th>
+                                <th>节点</th>
+                                <th>NPS</th>
+                                <th>耗时</th>
+                                <th>分数</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ai-stats-body">
+                            <tr id="ai-stats-empty">
+                                <td colspan="9">等待对局开始。开局后显示实时搜索统计</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div id="ai-current">等待对局开始。</div>
+            </aside>
+        </div>
+
+        <!-- 对局总结浮层 -->
+        <div id="game-summary" class="hide">
+            <span id="game-summary-text">红方胜！</span>
+            <button id="restartbtn" type="button">再来一局</button>
+        </div>
+
+        <!-- 底部说明区块 -->
+        <div id="engine-note">
+            <p class="engine-tech">象眼引擎 (ElephantEye by 黄晨) 通过 WebAssembly (WASM) 纯本地单核并行搜索计算。</p>
+            <p>基于标准 UCCI 协议通信，限制单步最大思考时间为 5 秒，超时后返回最优落子。</p>
+            <p class="engine-links">
+                <a href="./specs/prd.md">需求规范文档</a>
+                <span>·</span>
+                <a href="./specs/ui.md">UI 设计规范</a>
+                <span>·</span>
+                <a href="./third-party/eleeye/">ElephantEye C++ 源码</a>
+            </p>
+        </div>
+    </div>
+
+    <!-- 脚本引入 -->
+    <script src="./js/xiangqi.js"></script>
+    <script src="./js/xiangqiboard.js"></script>
+    <script src="./js/app.js"></script>
+</body>
+</html>

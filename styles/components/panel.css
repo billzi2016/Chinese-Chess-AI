@@ -1,0 +1,100 @@
+#ai-panel {
+  width: var(--panel-width);
+  height: calc(var(--board-size) + (var(--board-border-size) * 4) + (var(--board-border-size) * 2));
+  box-sizing: border-box;
+  padding: 16px;
+  color: var(--color-text-main);
+  background: var(--color-panel-bg);
+  border: 1px solid var(--color-panel-border);
+  box-shadow: var(--color-panel-shadow);
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+#ai-panel-title {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+#ai-panel-subtitle {
+  margin-top: 4px;
+  color: var(--color-text-muted);
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+#ai-table-wrap {
+  margin-top: 14px;
+  flex: 1;
+  overflow-y: auto;
+  border-radius: 4px;
+}
+
+#ai-stats-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+#ai-stats-table th,
+#ai-stats-table td {
+  padding: 8px 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  text-align: left;
+  white-space: nowrap;
+}
+
+#ai-stats-table th {
+  position: sticky;
+  top: 0;
+  color: #b8bfcc;
+  background: var(--color-panel-bg);
+  font-weight: 700;
+  z-index: 10;
+}
+
+#ai-stats-table tbody tr:nth-child(odd) {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+#ai-stats-empty td {
+  color: #9aa2af;
+  text-align: center;
+  padding: 24px 0;
+}
+
+#ai-current {
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  color: #d8deea;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+/* 分数与来源高亮样式 */
+.score-positive {
+  color: var(--color-score-positive);
+  font-weight: 600;
+}
+
+.score-negative {
+  color: var(--color-score-negative);
+  font-weight: 600;
+}
+
+.score-neutral {
+  color: var(--color-score-neutral);
+}
+
+.source-ai {
+  color: var(--color-source-ai);
+  font-weight: 700;
+}
+
+.source-human {
+  color: var(--color-source-human);
+  font-weight: 700;
+}

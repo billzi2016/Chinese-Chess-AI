@@ -1,0 +1,44 @@
+#content #content-title .title-counter {
+  margin: 0 16px;
+  width: 54px;
+  height: 54px;
+  border-radius: var(--radius-badge);
+  font-size: 24px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 7px 7px 10px rgba(0, 0, 0, 0.25),
+              inset 5px 5px 7px rgba(255, 255, 255, 0.25),
+              inset -5px -5px 7px rgba(0, 0, 0, 0.5);
+}
+
+#black-counter {
+  background: #333333;
+  color: #ffffff;
+}
+
+#red-counter {
+  background: #8c2d19;
+  color: #ffffff;
+}
+
+#content #content-title #title {
+  font-size: 38px;
+  font-weight: 800;
+  text-shadow: 0 2px 4px #000000;
+  display: flex;
+  align-items: center;
+}
+
+#content #content-title #title span {
+  margin: 0 6px;
+}
+
+#content #content-title #title span:nth-child(odd) {
+  color: #333333;
+}
+
+#content #content-title #title span:nth-child(even) {
+  color: #ffffff;
+}
