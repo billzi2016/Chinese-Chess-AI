@@ -1,6 +1,13 @@
 /**
  * xiangqi.js - 中国象棋规则裁判与状态维护引擎
  * 遵循标准中国象棋规则与 FEN 规范
+ *
+ * @author Jeff Hlywa (jhlywa) & lengyanyu258
+ * @license BSD 2-Clause License
+ * @see https://github.com/lengyanyu258/xiangqi.js
+ *
+ * Copyright (c) 2017-2023 Jeff Hlywa & lengyanyu258
+ * All rights reserved.
  */
 
 (function (global) {

@@ -1,5 +1,12 @@
 /**
  * xiangqiboard.js - 中国象棋 DOM 棋盘渲染与菜单交互器
+ *
+ * @author Chris Oakman & lengyanyu258
+ * @license MIT License
+ * @see https://github.com/lengyanyu258/xiangqiboardjs
+ *
+ * Copyright (c) 2017-2023 Chris Oakman & lengyanyu258
+ * Released under the MIT license
  */
 
 (function (global) {

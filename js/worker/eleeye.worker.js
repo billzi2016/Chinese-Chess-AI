@@ -1,6 +1,11 @@
 /**
  * eleeye.worker.js - 象眼 WASM 引擎 Web Worker 算力桥接器
  * 严格连接真实象眼 WASM 实例与 UCCI 协议，零伪造数据
+ *
+ * @engine ElephantEye (象眼中国象棋引擎)
+ * @author 黄晨 (Morning Yellow)
+ * @license GNU Lesser General Public License v2.1 (LGPL v2.1)
+ * @see third-party/eleeye
  */
 
 var wasmModule = null;
