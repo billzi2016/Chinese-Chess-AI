@@ -1,8 +1,10 @@
-**English Version** | [中文文档](README_CN.md) | 🌐 **Live Demo**: [https://billzi2016.github.io/Chinese-Chess-AI/](https://billzi2016.github.io/Chinese-Chess-AI/)
-
 # Chinese-Chess-AI (WebAssembly-Powered High-Performance Xiangqi AI)
 
-`Chinese-Chess-AI` is a modern, high-performance Chinese Chess (Xiangqi) gameplay and AI computation system running entirely on the front-end via WebAssembly (WASM). By cross-compiling a low-level C++ evaluation engine using Emscripten and leveraging Web Workers for complete decoupling of computation from the main UI thread, the application provides high-efficiency Alpha-Beta tree search and real-time UCCI analysis locally in the browser.
+**English Version** | [中文文档](README_CN.md)
+
+**Live Demo (GitHub Pages)**: [https://billzi2016.github.io/Chinese-Chess-AI/](https://billzi2016.github.io/Chinese-Chess-AI/)
+
+`Chinese-Chess-AI` is a modern, high-performance single-threaded (sufficient performance, defeats all amateur players) Chinese Chess (Xiangqi) gameplay and AI computation system running entirely on the front-end via WebAssembly (WASM). By cross-compiling a low-level C++ evaluation engine using Emscripten and leveraging Web Workers for complete decoupling of computation from the main UI thread, the application provides high-efficiency Alpha-Beta tree search and real-time UCCI analysis locally in the browser.
 
 ---
 

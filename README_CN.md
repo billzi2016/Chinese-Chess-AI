@@ -1,8 +1,10 @@
-[English Version](README.md) | **中文文档** | 🌐 **在线体验 (GitHub Pages)**: [https://billzi2016.github.io/Chinese-Chess-AI/](https://billzi2016.github.io/Chinese-Chess-AI/)
-
 # Chinese-Chess-AI (WebAssembly 驱动的高性能中国象棋 AI 系统)
 
-`Chinese-Chess-AI` 是一款采用纯前端技术构建、基于 WebAssembly (WASM) 运行的高性能中国象棋对弈与算力分析系统。系统通过 Emscripten 交叉编译底层 C++ 算力引擎，利用 Web Worker 实现计算线程与 UI 主线程的彻底解耦，在浏览器本地提供极高算力的 Alpha-Beta 树搜索与实时 UCCI 分析。
+[English Version](README.md) | **中文文档**
+
+**在线体验 (GitHub Pages)**: [https://billzi2016.github.io/Chinese-Chess-AI/](https://billzi2016.github.io/Chinese-Chess-AI/)
+
+`Chinese-Chess-AI` 是一款采用纯前端技术构建、基于 WebAssembly (WASM) 单线程（性能足够，击败所有业余选手）运行的高性能中国象棋对弈与算力分析系统。系统通过 Emscripten 交叉编译底层 C++ 算力引擎，利用 Web Worker 实现计算线程与 UI 主线程的彻底解耦，在浏览器本地提供极高算力的 Alpha-Beta 树搜索与实时 UCCI 分析。
 
 ---
 
