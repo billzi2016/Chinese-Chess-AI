@@ -29,7 +29,8 @@
 
 ## 2. Core Highlights & Features
 
-* **Zero Server Computation Cost**: The ElephantEye (Eleeye) engine is compiled to WebAssembly, running efficiently in the player's local browser.
+* **3 Flexible Gameplay Modes**: Supports Player vs Player (PVP), Player vs AI (PVE), and AI vs AI (EVE) modes.
+* **Zero Backend Computation Cost**: The ElephantEye (Eleeye) engine is compiled to WebAssembly, running efficiently in the player's local browser.
 * **Zero Main-Thread Lag**: Heavy engine computation is offloaded to Web Workers, ensuring single-core computation never blocks UI interaction.
 * **Modular CSS Architecture**: Design Tokens (CSS native variables) + localized component scoping prevent hardcoding and style pollution.
 * **Real-time AI Search Evaluation Panel**: The sidebar parses the UCCI text stream in real-time, displaying move number, side, source, notation, nodes count, NPS (Nodes Per Second), time, and evaluation score, **never displaying fake mock data**.
