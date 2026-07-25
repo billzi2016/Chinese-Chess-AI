@@ -90,29 +90,44 @@
   };
 
   // 根据 Xiangqi 实例数据更新渲染棋盘
-  XiangqiBoard.prototype.render = function (game) {
+  XiangqiBoard.prototype.render = function (game, lastMove) {
     if (!game || !this.container) return;
+    if (lastMove !== undefined) this.lastMove = lastMove;
+
+    const selectedPiece = (this.selectedSq !== null) ? game.board[this.selectedSq] : null;
+    const isCurrentTurn = selectedPiece && (selectedPiece.color === game.turn);
 
     const cells = this.container.querySelectorAll('.xiangqi-cell');
     cells.forEach((cell, idx) => {
       cell.innerHTML = '';
-      cell.classList.remove('selected', 'highlight');
+      cell.classList.remove('selected', 'highlight', 'last-move');
 
       if (this.selectedSq === idx) {
         cell.classList.add('selected');
-        cell.style.backgroundColor = 'rgba(39, 174, 96, 0.35)';
-        cell.style.boxShadow = 'inset 0 0 8px #27ae60';
+        if (isCurrentTurn) {
+          cell.style.backgroundColor = 'rgba(39, 174, 96, 0.35)';
+          cell.style.boxShadow = 'inset 0 0 8px #27ae60';
+        } else {
+          cell.style.backgroundColor = 'rgba(231, 76, 60, 0.35)';
+          cell.style.boxShadow = 'inset 0 0 8px #e74c3c';
+        }
+      } else if (this.lastMove && (this.lastMove.from === idx || this.lastMove.to === idx)) {
+        cell.classList.add('last-move');
+        cell.style.backgroundColor = 'rgba(230, 126, 34, 0.38)';
+        cell.style.boxShadow = 'inset 0 0 10px #e67e22';
       } else {
         cell.style.backgroundColor = 'transparent';
         cell.style.boxShadow = 'none';
       }
 
-      // 如果当前有选中的起子，高亮合法落子目标格
+      // 如果当前有选中的起子，高亮合法落子目标格 (己方绿色，敌方红色)
       if (this.selectedSq !== null && window.gameInstance && window.gameInstance.isLegalMove) {
         if (window.gameInstance.isLegalMove(this.selectedSq, idx)) {
           const hintDot = document.createElement('div');
           hintDot.className = 'move-hint-dot';
-          hintDot.style.cssText = 'width: 14px; height: 14px; border-radius: 50%; background: rgba(39, 174, 96, 0.7); position: absolute; z-index: 5;';
+          const dotColor = isCurrentTurn ? 'rgba(39, 174, 96, 0.8)' : 'rgba(231, 76, 60, 0.85)';
+          const dotGlow = isCurrentTurn ? 'rgba(39, 174, 96, 0.9)' : 'rgba(231, 76, 60, 0.9)';
+          hintDot.style.cssText = `width: 14px; height: 14px; border-radius: 50%; background: ${dotColor}; box-shadow: 0 0 6px ${dotGlow}; position: absolute; z-index: 5;`;
           cell.appendChild(hintDot);
         }
       }

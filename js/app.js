@@ -19,6 +19,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   let worker = null;
   let latestInfo = null;
+  let lastMove = null;
 
   // 初始化 ElephantEye Worker 算力桥接
   try {
@@ -30,7 +31,7 @@ document.addEventListener('DOMContentLoaded', function () {
       if (data.type === 'INFO') {
         latestInfo = data.info;
         if (latestInfo) {
-          updateAiCurrentStatus('AI Alpha-Beta 剪枝搜寻中...');
+          updateAiCurrentStatus(`AI Alpha-Beta 剪枝搜寻中... (深度: ${latestInfo.depth || '-'})`);
         }
       } else if (data.type === 'BEST_MOVE') {
         handleAiBestMove(data.move, latestInfo);
@@ -49,7 +50,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const moveResult = game.move(sq.from, sq.to);
     if (moveResult) {
       moveCount++;
-      board.render(game);
+      lastMove = { from: sq.from, to: sq.to };
+      board.render(game, lastMove);
       appendMoveToTable('AI', moveResult, info);
 
       if (gameMode === 'eve') {
@@ -94,10 +96,11 @@ document.addEventListener('DOMContentLoaded', function () {
     gameMode = mode;
     playerSide = side || 'r';
     moveCount = 0;
+    lastMove = null;
 
     game = new Xiangqi();
     window.gameInstance = game;
-    board.render(game);
+    board.render(game, lastMove);
 
     // 更新顶栏角色身份
     updateRoleTags(gameMode, playerSide);
@@ -131,7 +134,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const moveResult = game.move(from, to);
     if (moveResult) {
       moveCount++;
-      board.render(game);
+      lastMove = { from: from, to: to };
+      board.render(game, lastMove);
       appendMoveToTable('玩家', moveResult, null);
 
       if (gameMode === 'pve') {
