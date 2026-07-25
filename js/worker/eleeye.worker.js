@@ -76,31 +76,42 @@ function executeSearch(fen, movetime) {
 /**
  * 监听并解析象眼引擎标准输出 stdout 每一行的 UCCI 字符串
  */
+var currentSearchStats = null;
+
 function handleEngineStdoutLine(line) {
   if (!line) return;
-  const trimmed = line.trim();
+  line = line.trim();
 
   // 1. 解析 UCCI 实时搜索状态 info 消息
-  if (trimmed.startsWith('info')) {
-    const infoObj = parseUcciInfoLine(trimmed);
-    if (infoObj) {
+  if (line.startsWith('info')) {
+    const info = parseUcciInfoLine(line);
+    if (info) {
+      if (!currentSearchStats) {
+        currentSearchStats = { depth: '-', nodes: '-', nps: '-', time: '-', score: null };
+      }
+      if (info.depth !== undefined) currentSearchStats.depth = info.depth;
+      if (info.nodes !== undefined) currentSearchStats.nodes = info.nodes;
+      if (info.nps !== undefined) currentSearchStats.nps = info.nps;
+      if (info.time !== undefined) currentSearchStats.time = info.time;
+      if (info.score !== undefined) currentSearchStats.score = info.score;
+
       self.postMessage({
         type: 'INFO',
-        info: infoObj
+        info: info
       });
     }
   }
 
   // 2. 解析引擎最终决策 bestmove 消息
-  if (trimmed.startsWith('bestmove')) {
-    const parts = trimmed.split(/\s+/);
-    const bestMove = parts[1]; // 例如 "h2e2"
-    if (bestMove && bestMove !== '(none)' && bestMove !== 'nobestmove') {
-      self.postMessage({
-        type: 'BEST_MOVE',
-        move: bestMove
-      });
-    }
+  else if (line.startsWith('bestmove')) {
+    const parts = line.split(/\s+/);
+    const bestMove = parts[1];
+    self.postMessage({
+      type: 'BEST_MOVE',
+      move: bestMove,
+      info: currentSearchStats
+    });
+    currentSearchStats = null;
   }
 }
 
@@ -112,7 +123,7 @@ function parseUcciInfoLine(line) {
   const tokens = line.split(/\s+/);
   const result = {};
 
-  for (let i = 1; i < tokens.length; i += 2) {
+  for (let i = 1; i < tokens.length - 1; i++) {
     const key = tokens[i];
     const val = tokens[i + 1];
 
@@ -120,9 +131,10 @@ function parseUcciInfoLine(line) {
     else if (key === 'score') result.score = parseInt(val, 10);
     else if (key === 'time') result.time = parseInt(val, 10);
     else if (key === 'nodes') result.nodes = parseInt(val, 10);
+    else if (key === 'nps') result.nps = parseInt(val, 10);
   }
 
-  if (result.nodes !== undefined && result.time !== undefined && result.time > 0) {
+  if (result.nodes !== undefined && result.time !== undefined && result.time > 0 && result.nps === undefined) {
     result.nps = Math.round((result.nodes * 1000) / result.time);
   }
 

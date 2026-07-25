@@ -66,6 +66,29 @@ document.addEventListener('DOMContentLoaded', function () {
   window.gameInstance = game;
   board.render(game);
 
+  // 动态更新顶栏左右两侧的比分角色标签 (AI / 玩家)
+  function updateRoleTags(mode, side) {
+    const blackTag = document.getElementById('black-role-tag');
+    const redTag = document.getElementById('red-role-tag');
+    if (!blackTag || !redTag) return;
+
+    if (mode === 'eve') {
+      blackTag.textContent = 'AI';
+      redTag.textContent = 'AI';
+    } else if (mode === 'pvp') {
+      blackTag.textContent = '玩家';
+      redTag.textContent = '玩家';
+    } else { // pve
+      if (side === 'r') {
+        blackTag.textContent = 'AI';
+        redTag.textContent = '玩家';
+      } else {
+        blackTag.textContent = '玩家';
+        redTag.textContent = 'AI';
+      }
+    }
+  }
+
   // 全局开局处理函数
   window.onGameStart = function (mode, side) {
     gameMode = mode;
@@ -76,9 +99,11 @@ document.addEventListener('DOMContentLoaded', function () {
     window.gameInstance = game;
     board.render(game);
 
+    // 更新顶栏角色身份
+    updateRoleTags(gameMode, playerSide);
+
     // 清空侧边栏 AI 评估日志表格
     clearAiStatsTable();
-    // 根据对局模式初始化启动
     if (gameMode === 'eve') {
       updateAiCurrentStatus('机机对战启动。象眼 AI 正在思考红方第一步...');
       triggerAiThink();
@@ -146,14 +171,17 @@ document.addEventListener('DOMContentLoaded', function () {
     let scoreClass = 'score-neutral';
 
     if (info) {
-      if (info.depth !== undefined) depthStr = info.depth;
-      if (info.nodes !== undefined) nodesStr = info.nodes.toLocaleString();
-      if (info.nps !== undefined) npsStr = info.nps.toLocaleString();
-      if (info.time !== undefined) timeStr = info.time + 'ms';
-      if (info.score !== undefined) {
-        scoreStr = info.score;
+      if (info.depth !== undefined && info.depth !== '-') depthStr = info.depth;
+      if (info.nodes !== undefined && info.nodes !== '-') nodesStr = (typeof info.nodes === 'number') ? info.nodes.toLocaleString() : info.nodes;
+      if (info.nps !== undefined && info.nps !== '-') npsStr = (typeof info.nps === 'number') ? info.nps.toLocaleString() : info.nps;
+      if (info.time !== undefined && info.time !== '-') timeStr = (typeof info.time === 'number') ? info.time + 'ms' : info.time;
+      if (info.score !== undefined && info.score !== null) {
+        scoreStr = (info.score > 0 ? '+' : '') + info.score;
         if (info.score > 0) scoreClass = 'score-positive';
         else if (info.score < 0) scoreClass = 'score-negative';
+      } else {
+        scoreStr = '-';
+        scoreClass = 'score-neutral';
       }
     }
 

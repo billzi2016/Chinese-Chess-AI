@@ -23,10 +23,23 @@
   color: #ffffff;
 }
 
+.badge-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.role-tag-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: #d1d5db;
+  letter-spacing: 1px;
+}
+
 #content #content-title #title {
   font-size: 38px;
   font-weight: 800;
-  text-shadow: 0 2px 4px #000000;
   display: flex;
   align-items: center;
 }
@@ -35,10 +48,12 @@
   margin: 0 6px;
 }
 
-#content #content-title #title span:nth-child(odd) {
-  color: #333333;
+#content #content-title #title .title-red {
+  color: #d32f2f;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
 }
 
-#content #content-title #title span:nth-child(even) {
-  color: #ffffff;
+#content #content-title #title .title-black {
+  color: #1a1a1a;
+  text-shadow: 0 2px 6px rgba(255, 255, 255, 0.4);
 }

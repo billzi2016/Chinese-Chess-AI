@@ -10,18 +10,26 @@
 <body>
     <div id="content">
         <!-- 顶部标题与比分徽章栏 -->
-        <div id="content-title" class="dfr aic">
-            <div id="black-counter" class="dfr aic jcc title-counter">
-                <span class="title-counter-data">0</span>
+        <div id="content-title" class="dfr aic jcsb">
+            <div class="badge-container dfc aic">
+                <div id="black-counter" class="dfr aic jcc title-counter">
+                    <span id="black-score" class="title-counter-data">0</span>
+                </div>
+                <span id="black-role-tag" class="role-tag-label">AI</span>
             </div>
+
             <h1 id="title" class="dfr aic jcc">
-                <span>中</span>
-                <span>国</span>
-                <span>象</span>
-                <span>棋</span>
+                <span class="title-red">中</span>
+                <span class="title-black">国</span>
+                <span class="title-red">象</span>
+                <span class="title-black">棋</span>
             </h1>
-            <div id="red-counter" class="dfr aic jcc title-counter">
-                <span class="title-counter-data">0</span>
+
+            <div class="badge-container dfc aic">
+                <div id="red-counter" class="dfr aic jcc title-counter">
+                    <span id="red-score" class="title-counter-data">0</span>
+                </div>
+                <span id="red-role-tag" class="role-tag-label">玩家</span>
             </div>
         </div>
 
