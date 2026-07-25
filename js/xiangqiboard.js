@@ -203,6 +203,28 @@
       });
     }
 
+    const helpBtn = document.getElementById('helpbtn');
+    if (helpBtn) {
+      helpBtn.addEventListener('click', function () {
+        alert(
+          "【中国象棋对弈规则与系统说明】\n\n" +
+          "1. 对局模式：\n" +
+          "   - 本机双人：两位玩家在同一设备轮流落子对决。\n" +
+          "   - 人机对战：玩家与 WebAssembly 引擎对弈（可选执红/执黑）。\n" +
+          "   - 机机对决：自动开启 AI 对 AI 算法自我连贯演练。\n\n" +
+          "2. 行棋规则：\n" +
+          "   - 马走日（受别马腿阻断限制）。\n" +
+          "   - 相/象走田（不可过河，受塞象眼限制）。\n" +
+          "   - 车走直线无障碍；炮移动无障碍，吃子需隔一棋子。\n" +
+          "   - 兵/卒未过河只能直走一格，过河后可横走，不可倒退。\n" +
+          "   - 仕/士与帅/将限定在九宫格范围内移动。\n\n" +
+          "3. 交互提示：\n" +
+          "   - 选中己方棋子显示【绿色】落子点，选中敌方显示【警示红色】（只看不可动）。\n" +
+          "   - 落子后起点与终点显示【橙金发光框】着法轨迹。"
+        );
+      });
+    }
+
     if (returnToMain) {
       returnToMain.addEventListener('click', function () {
         menuMode.classList.add('hide');
