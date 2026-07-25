@@ -17,6 +17,52 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   });
 
+  let worker = null;
+  let latestInfo = null;
+
+  // 初始化 ElephantEye Worker 算力桥接
+  try {
+    worker = new Worker('./js/worker/eleeye.worker.js');
+    worker.postMessage({ type: 'INIT' });
+
+    worker.onmessage = function (e) {
+      const data = e.data || {};
+      if (data.type === 'INFO') {
+        latestInfo = data.info;
+        if (latestInfo) {
+          updateAiCurrentStatus(`象眼 AI 深度搜索中... 深度:${latestInfo.depth || '-'}, 节点:${latestInfo.nodes || '-'}, 耗时:${latestInfo.time || '-'}ms`);
+        }
+      } else if (data.type === 'BEST_MOVE') {
+        handleAiBestMove(data.move, latestInfo);
+        latestInfo = null;
+      }
+    };
+  } catch (err) {
+    console.warn('Worker 初始化提示:', err);
+  }
+
+  // 处理 AI 最佳落子
+  function handleAiBestMove(ucciMove, info) {
+    const sq = game.ucciToSq(ucciMove);
+    if (!sq) return;
+
+    const moveResult = game.move(sq.from, sq.to);
+    if (moveResult) {
+      moveCount++;
+      board.render(game);
+      appendMoveToTable('AI', moveResult, info);
+
+      if (gameMode === 'eve') {
+        updateAiCurrentStatus('AI 落子完成。准备进行下一步对决...');
+        setTimeout(() => {
+          triggerAiThink();
+        }, 500);
+      } else if (gameMode === 'pve') {
+        updateAiCurrentStatus('AI 落子完成。轮到玩家思考落子...');
+      }
+    }
+  }
+
   window.gameInstance = game;
   board.render(game);
 
@@ -32,16 +78,31 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // 清空侧边栏 AI 评估日志表格
     clearAiStatsTable();
-    updateAiCurrentStatus('对局已开始。等待执红方落子...');
-
-    // 若玩家选择执黑，AI 自动先手下第一步
-    if (gameMode === 'pve' && playerSide === 'b') {
+    // 根据对局模式初始化启动
+    if (gameMode === 'eve') {
+      updateAiCurrentStatus('机机对战启动。象眼 AI 正在思考红方第一步...');
       triggerAiThink();
+    } else if (gameMode === 'pve' && playerSide === 'b') {
+      updateAiCurrentStatus('电脑执红先走。象眼 AI 正在思考红方第一步...');
+      triggerAiThink();
+    } else {
+      updateAiCurrentStatus('对局已开始。等待执红玩家落子...');
     }
   };
 
   // 处理人类玩家落子
   function handleHumanMove(from, to) {
+    if (gameMode === 'eve') {
+      // 机机对战模式下禁止人类手动操控
+      return;
+    }
+
+    const piece = game.board[from];
+    if (gameMode === 'pve' && piece && piece.color !== playerSide) {
+      // 人机对战时只有轮到玩家阵营才能点击操控
+      return;
+    }
+
     const moveResult = game.move(from, to);
     if (moveResult) {
       moveCount++;
@@ -57,9 +118,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // 触发象眼 AI 思考
   function triggerAiThink() {
-    // 向 Worker 发送搜索请求，限制 5 秒思考
     const currentFen = game.fen();
-    console.log('发送 FEN 给象眼引擎:', currentFen);
+    if (worker) {
+      worker.postMessage({
+        type: 'SEARCH',
+        fen: currentFen,
+        movetime: 5000
+      });
+    }
   }
 
   // 动态向右侧侧边栏表格追加真实数据行 (绝不填充 Mock 数据)
