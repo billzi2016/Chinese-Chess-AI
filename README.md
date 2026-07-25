@@ -98,12 +98,7 @@ python3 server.py
 * **开源协议**：**MIT License**
 * **说明**：提供 DOM 9x10 中国象棋棋盘绘制、像素坐标转换、拖拽落子与走法预判高亮逻辑。
 
-### 5.4 UI 结构与视觉参考：Othello-AI (ui_example)
-* **项目名称**：Othello-AI (黑白棋 AI)
-* **原作者**：billzi2016
-* **项目地址**：[https://github.com/billzi2016/Othello-AI](https://github.com/billzi2016/Othello-AI)
-* **源码位置**：`ui_example` (仅作为本地设计参考，已被 `.gitignore` 排除)
-* **说明**：本项目的 DOM 节点组织、深色科技风侧边栏 (`#ai-panel`)、开局遮罩菜单 (`#board-options`) 及响应式 CSS 样式布局均参考该项目的优秀设计。
+
 
 ---
 
