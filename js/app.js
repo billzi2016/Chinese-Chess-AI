@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function () {
       if (data.type === 'INFO') {
         latestInfo = data.info;
         if (latestInfo) {
-          updateAiCurrentStatus(`象眼 AI 深度搜索中... 深度:${latestInfo.depth || '-'}`);
+          updateAiCurrentStatus('AI Alpha-Beta 剪枝搜寻中...');
         }
       } else if (data.type === 'BEST_MOVE') {
         handleAiBestMove(data.move, latestInfo);
