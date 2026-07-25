@@ -42,6 +42,68 @@ document.addEventListener('DOMContentLoaded', function () {
     console.warn('Worker 初始化提示:', err);
   }
 
+  // 全局终局胜负判定
+  function triggerGameOver(winnerText) {
+    updateAiCurrentStatus(`对局结束！${winnerText}`);
+    const summaryEl = document.getElementById('game-summary');
+    const summaryText = document.getElementById('game-summary-text');
+    if (summaryEl && summaryText) {
+      summaryText.innerText = winnerText;
+      summaryEl.classList.remove('hide');
+    }
+  }
+
+  function checkGameOver(moveResult, info) {
+    if (!game) return false;
+
+    // 1. 物理检查：判断棋盘上红帅 ('r') 与黑将 ('b') 是否被吃掉
+    let hasRedKing = false;
+    let hasBlackKing = false;
+    for (let i = 0; i < 90; i++) {
+      const p = game.board[i];
+      if (p && p.type === 'k') {
+        if (p.color === 'r') hasRedKing = true;
+        if (p.color === 'b') hasBlackKing = true;
+      }
+    }
+
+    if (!hasRedKing) {
+      triggerGameOver('黑方胜！(红帅被吃)');
+      return true;
+    }
+    if (!hasBlackKing) {
+      triggerGameOver('红方胜！(黑将被吃)');
+      return true;
+    }
+
+    // 2. 规则检测：判断当前行动方是否将死或困毙无子可走
+    if (typeof game.in_checkmate === 'function' && game.in_checkmate()) {
+      const winnerStr = (game.turn === 'r') ? '黑方胜！(红方被将死)' : '红方胜！(黑方被将死)';
+      triggerGameOver(winnerStr);
+      return true;
+    }
+
+    if (typeof game.in_stalemate === 'function' && game.in_stalemate()) {
+      const winnerStr = (game.turn === 'r') ? '黑方胜！(红方困毙)' : '红方胜！(黑方困毙)';
+      triggerGameOver(winnerStr);
+      return true;
+    }
+
+    return false;
+  }
+
+  // 绑定再来一局按钮
+  const restartBtn = document.getElementById('restartbtn');
+  if (restartBtn) {
+    restartBtn.addEventListener('click', function () {
+      const summaryEl = document.getElementById('game-summary');
+      if (summaryEl) summaryEl.classList.add('hide');
+      if (window.onGameStart) {
+        window.onGameStart(gameMode, playerSide);
+      }
+    });
+  }
+
   // 处理 AI 最佳落子
   function handleAiBestMove(ucciMove, info) {
     const sq = game.ucciToSq(ucciMove);
@@ -53,6 +115,11 @@ document.addEventListener('DOMContentLoaded', function () {
       lastMove = { from: sq.from, to: sq.to };
       board.render(game, lastMove);
       appendMoveToTable('AI', moveResult, info);
+
+      // 检测是否触发判赢/判输
+      if (checkGameOver(moveResult, info)) {
+        return;
+      }
 
       if (gameMode === 'eve') {
         updateAiCurrentStatus('AI 落子完成。准备进行下一步对决...');
@@ -137,6 +204,10 @@ document.addEventListener('DOMContentLoaded', function () {
       lastMove = { from: from, to: to };
       board.render(game, lastMove);
       appendMoveToTable('玩家', moveResult, null);
+
+      if (checkGameOver(moveResult, null)) {
+        return;
+      }
 
       if (gameMode === 'pve') {
         updateAiCurrentStatus('玩家落子完成。AI 正在思考中...');
