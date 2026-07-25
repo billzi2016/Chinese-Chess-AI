@@ -31,7 +31,7 @@ struct RC4Struct {
       uint32_t dw[2];
       uint64_t qw;
     } Seed;
-#if defined __arm__ || defined __aarch64__ || defined __mips__
+#if defined __arm__ || defined __aarch64__ || defined __mips__ || defined __EMSCRIPTEN__ || defined __wasm__ || defined __wasm32__
     Seed.qw = 0;
 #else
     Seed.qw = TimeStampCounter();
