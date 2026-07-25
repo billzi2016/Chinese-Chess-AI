@@ -46,14 +46,14 @@
   white-space: nowrap;
 }
 
-#ai-stats-table th:nth-child(1), #ai-stats-table td:nth-child(1) { width: 6%; text-align: center; }  /* 方 */
-#ai-stats-table th:nth-child(2), #ai-stats-table td:nth-child(2) { width: 11%; text-align: center; } /* 来源 */
-#ai-stats-table th:nth-child(3), #ai-stats-table td:nth-child(3) { width: 12%; text-align: center; } /* 落子 */
-#ai-stats-table th:nth-child(4), #ai-stats-table td:nth-child(4) { width: 9%; text-align: center; }  /* 深度 */
-#ai-stats-table th:nth-child(5), #ai-stats-table td:nth-child(5) { width: 24%; text-align: right; }  /* 节点 */
-#ai-stats-table th:nth-child(6), #ai-stats-table td:nth-child(6) { width: 22%; text-align: right; }  /* NPS */
-#ai-stats-table th:nth-child(7), #ai-stats-table td:nth-child(7) { width: 12%; text-align: right; }  /* 耗时 */
-#ai-stats-table th:nth-child(8), #ai-stats-table td:nth-child(8) { width: 4%; text-align: right; }  /* 分数 */
+#ai-stats-table th:nth-child(1), #ai-stats-table td:nth-child(1) { width: 5%; text-align: center; }  /* # */
+#ai-stats-table th:nth-child(2), #ai-stats-table td:nth-child(2) { width: 6%; text-align: center; }  /* 方 */
+#ai-stats-table th:nth-child(3), #ai-stats-table td:nth-child(3) { width: 11%; text-align: center; } /* 来源 */
+#ai-stats-table th:nth-child(4), #ai-stats-table td:nth-child(4) { width: 13%; text-align: center; } /* 落子 */
+#ai-stats-table th:nth-child(5), #ai-stats-table td:nth-child(5) { width: 26%; text-align: right; }  /* 节点 */
+#ai-stats-table th:nth-child(6), #ai-stats-table td:nth-child(6) { width: 23%; text-align: right; }  /* NPS */
+#ai-stats-table th:nth-child(7), #ai-stats-table td:nth-child(7) { width: 10%; text-align: right; }  /* 耗时 */
+#ai-stats-table th:nth-child(8), #ai-stats-table td:nth-child(8) { width: 6%; text-align: right; }   /* 分数 */
 
 #ai-stats-table th {
   position: sticky;

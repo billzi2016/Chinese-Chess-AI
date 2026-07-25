@@ -20,7 +20,7 @@
   /* 尺寸 Token */
   --board-size: 600px;
   --board-border-size: calc(var(--board-size) / 60);
-  --panel-width: min(680px, calc(100vw - 32px));
+  --panel-width: min(540px, calc(100vw - 32px));
   --panel-height: calc(var(--board-size) + (var(--board-border-size) * 6));
   
   /* 阴影与圆角 Token */

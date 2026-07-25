@@ -163,7 +163,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const sideText = (game.turn === 'b') ? '红' : '黑'; // 刚走的这一步的棋子阵营
     const sourceClass = (source === 'AI') ? 'source-ai' : 'source-human';
     
-    let depthStr = '-';
     let nodesStr = '-';
     let npsStr = '-';
     let timeStr = '-';
@@ -171,7 +170,6 @@ document.addEventListener('DOMContentLoaded', function () {
     let scoreClass = 'score-neutral';
 
     if (info) {
-      if (info.depth !== undefined && info.depth !== null && info.depth !== '-') depthStr = info.depth;
       if (info.nodes !== undefined && info.nodes !== '-') nodesStr = (typeof info.nodes === 'number') ? info.nodes.toLocaleString() : info.nodes;
       if (info.nps !== undefined && info.nps !== '-') npsStr = (typeof info.nps === 'number') ? info.nps.toLocaleString() : info.nps;
       if (info.time !== undefined && info.time !== '-') timeStr = (typeof info.time === 'number') ? info.time + 'ms' : info.time;
@@ -182,17 +180,11 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     }
 
-    // 兜底补全 depth 深度
-    if (depthStr === '-' && latestInfo && latestInfo.depth) {
-      depthStr = latestInfo.depth;
-    }
-
     tr.innerHTML = `
       <td>${moveCount}</td>
       <td>${sideText}</td>
       <td class="${sourceClass}">${source}</td>
       <td>${moveStr}</td>
-      <td>${depthStr}</td>
       <td>${nodesStr}</td>
       <td>${npsStr}</td>
       <td>${timeStr}</td>
