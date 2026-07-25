@@ -77,6 +77,7 @@ function executeSearch(fen, movetime) {
  * 监听并解析象眼引擎标准输出 stdout 每一行的 UCCI 字符串
  */
 var currentSearchStats = null;
+var maxSearchDepth = 0;
 
 function handleEngineStdoutLine(line) {
   if (!line) return;
@@ -89,7 +90,10 @@ function handleEngineStdoutLine(line) {
       if (!currentSearchStats) {
         currentSearchStats = { depth: '-', nodes: '-', nps: '-', time: '-', score: null };
       }
-      if (info.depth !== undefined) currentSearchStats.depth = info.depth;
+      if (info.depth !== undefined) {
+        maxSearchDepth = Math.max(maxSearchDepth, info.depth);
+        currentSearchStats.depth = maxSearchDepth;
+      }
       if (info.nodes !== undefined) currentSearchStats.nodes = info.nodes;
       if (info.nps !== undefined) currentSearchStats.nps = info.nps;
       if (info.time !== undefined) currentSearchStats.time = info.time;
@@ -101,17 +105,23 @@ function handleEngineStdoutLine(line) {
       });
     }
   }
-
   // 2. 解析引擎最终决策 bestmove 消息
   else if (line.startsWith('bestmove')) {
     const parts = line.split(/\s+/);
     const bestMove = parts[1];
+    if (!currentSearchStats) {
+      currentSearchStats = { depth: '-', nodes: '-', nps: '-', time: '-', score: null };
+    }
+    if (maxSearchDepth > 0) {
+      currentSearchStats.depth = maxSearchDepth;
+    }
     self.postMessage({
       type: 'BEST_MOVE',
       move: bestMove,
       info: currentSearchStats
     });
     currentSearchStats = null;
+    maxSearchDepth = 0;
   }
 }
 

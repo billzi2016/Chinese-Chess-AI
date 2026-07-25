@@ -66,25 +66,25 @@ document.addEventListener('DOMContentLoaded', function () {
   window.gameInstance = game;
   board.render(game);
 
-  // 动态更新顶栏左右两侧的比分角色标签 (AI / 玩家)
+  // 动态更新顶栏左右两侧球形徽章内的字符 (AI / 玩家)
   function updateRoleTags(mode, side) {
-    const blackTag = document.getElementById('black-role-tag');
-    const redTag = document.getElementById('red-role-tag');
-    if (!blackTag || !redTag) return;
+    const blackScore = document.getElementById('black-score');
+    const redScore = document.getElementById('red-score');
+    if (!blackScore || !redScore) return;
 
     if (mode === 'eve') {
-      blackTag.textContent = 'AI';
-      redTag.textContent = 'AI';
+      blackScore.textContent = 'AI';
+      redScore.textContent = 'AI';
     } else if (mode === 'pvp') {
-      blackTag.textContent = '玩家';
-      redTag.textContent = '玩家';
+      blackScore.textContent = '玩家';
+      redScore.textContent = '玩家';
     } else { // pve
       if (side === 'r') {
-        blackTag.textContent = 'AI';
-        redTag.textContent = '玩家';
+        blackScore.textContent = 'AI';
+        redScore.textContent = '玩家';
       } else {
-        blackTag.textContent = '玩家';
-        redTag.textContent = 'AI';
+        blackScore.textContent = '玩家';
+        redScore.textContent = 'AI';
       }
     }
   }
