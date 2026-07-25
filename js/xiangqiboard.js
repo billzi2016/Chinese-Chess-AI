@@ -49,6 +49,37 @@
     }
     
     this.container.appendChild(boardGrid);
+
+    // 渲染经典中国象棋“楚 河 漢 界”河界水墨大字
+    const riverLayer = document.createElement('div');
+    riverLayer.className = 'xiangqi-river-layer';
+    riverLayer.style.cssText = `
+      position: absolute;
+      top: 40%;
+      left: 0;
+      width: 100%;
+      height: 20%;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      pointer-events: none;
+      z-index: 2;
+      font-family: "Kaiti SC", "STKaiti", "KaiTi", serif;
+      font-size: 26px;
+      font-weight: 900;
+      color: rgba(100, 60, 20, 0.45);
+      letter-spacing: 12px;
+      user-select: none;
+    `;
+
+    const riverLeft = document.createElement('div');
+    riverLeft.innerText = '楚 河';
+    const riverRight = document.createElement('div');
+    riverRight.innerText = '漢 界';
+
+    riverLayer.appendChild(riverLeft);
+    riverLayer.appendChild(riverRight);
+    this.container.appendChild(riverLayer);
   };
 
   // 根据 Xiangqi 实例数据更新渲染棋盘

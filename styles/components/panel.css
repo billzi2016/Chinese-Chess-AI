@@ -29,24 +29,21 @@
   margin-top: 14px;
   flex: 1;
   overflow-y: auto;
-  overflow-x: hidden;
+  overflow-x: auto;
   border-radius: 4px;
 }
 
 #ai-stats-table {
   width: 100%;
-  table-layout: fixed;
   border-collapse: collapse;
   font-size: 13px;
 }
 
 #ai-stats-table th,
 #ai-stats-table td {
-  padding: 8px 4px;
+  padding: 8px 10px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.07);
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 #ai-stats-table th:nth-child(1), #ai-stats-table td:nth-child(1) { width: 6%; text-align: center; }  /* 方 */
