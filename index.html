@@ -123,17 +123,10 @@
             <button id="restartbtn" type="button">再来一局</button>
         </div>
 
-        <!-- 底部说明区块 -->
+        <!-- 底部全套硬核技术栈说明区块 -->
         <div id="engine-note">
-            <p class="engine-tech">象眼引擎 (ElephantEye by 黄晨) 通过 WebAssembly (WASM) 纯本地单核并行搜索计算。</p>
-            <p>基于标准 UCCI 协议通信，限制单步最大思考时间为 5 秒，超时后返回最优落子。</p>
-            <p class="engine-links">
-                <a href="./specs/prd.md">需求规范文档</a>
-                <span>·</span>
-                <a href="./specs/ui.md">UI 设计规范</a>
-                <span>·</span>
-                <a href="./third-party/eleeye/">ElephantEye C++ 源码</a>
-            </p>
+            <p class="engine-tech">系统采用 Emscripten WebAssembly 字节码编译、Zobrist 哈希置换表 (Transposition Table) 与 C++ Alpha-Beta 树搜索算法，在浏览器本地实现微秒级计算。</p>
+            <p>基于标准 UCCI 异步通信协议与 Web Worker 多线程解耦，实时解析搜索深度 (depth)、节点数、NPS、耗时与评估分；配置 COOP / COEP 跨源隔离标头与原生 CSS Design System 模块化架构。</p>
         </div>
     </div>
 
