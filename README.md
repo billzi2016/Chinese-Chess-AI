@@ -30,6 +30,7 @@
 ## 2. Core Highlights & Features
 
 * **3 Flexible Gameplay Modes**: Supports Player vs Player (PVP), Player vs AI (PVE), and AI vs AI (EVE) modes.
+* **Amateur Peak Strength & Search Depth 16**: Powered by Eleeye engine with Alpha-Beta pruning, default search depth reaches **16 plies**, delivering master-level performance.
 * **Zero Backend Computation Cost**: The ElephantEye (Eleeye) engine is compiled to WebAssembly, running efficiently in the player's local browser.
 * **Zero Main-Thread Lag**: Heavy engine computation is offloaded to Web Workers, ensuring single-core computation never blocks UI interaction.
 * **Modular CSS Architecture**: Design Tokens (CSS native variables) + localized component scoping prevent hardcoding and style pollution.
