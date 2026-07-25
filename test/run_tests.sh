@@ -21,9 +21,9 @@ echo "-> 运行 [2/5] Worker UCCI 日志解析器测试..."
 node "$SCRIPT_DIR/test_worker_parser.js"
 echo ""
 
-# 3. 运行 ElephantEye WebAssembly (WASM) 引擎单元测试
-echo "-> 运行 [3/5] eleeye.wasm 象眼 WASM 引擎测试..."
-node "$SCRIPT_DIR/test_eleeye_wasm.js"
+# 3. 运行 ElephantEye C++ WASM 真实 1000ms 算力搜索测试
+echo "-> 运行 [3/5] eleeye.wasm 象眼 C++ WASM 引擎真实算力测试..."
+node "$SCRIPT_DIR/test_eleeye_wasm_real.js"
 echo ""
 
 # 4. 运行 6324 端口服务器启动与能力测试

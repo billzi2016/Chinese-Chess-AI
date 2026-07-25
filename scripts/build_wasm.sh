@@ -1,36 +1,36 @@
 #!/usr/bin/env bash
-# 象眼 (ElephantEye) C++ 引擎 WebAssembly 编译脚本
+# ElephantEye 象眼 C++ 引擎编译为 WebAssembly 脚本
 
 set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
-
-OUT_DIR="$PROJECT_ROOT/js/worker"
-mkdir -p "$OUT_DIR"
+ELEEYE_DIR="$PROJECT_ROOT/third-party/eleeye"
+WORKER_DIR="$PROJECT_ROOT/js/worker"
 
 echo "开始使用 Emscripten (emcc) 编译 ElephantEye 象眼 C++ 引擎为 WebAssembly..."
 
 emcc -O3 \
+  -I"$ELEEYE_DIR/base" \
+  -I"$ELEEYE_DIR/eleeye" \
+  "$ELEEYE_DIR/base/pipe.cpp" \
+  "$ELEEYE_DIR/eleeye/book.cpp" \
+  "$ELEEYE_DIR/eleeye/eleeye.cpp" \
+  "$ELEEYE_DIR/eleeye/evaluate.cpp" \
+  "$ELEEYE_DIR/eleeye/genmoves.cpp" \
+  "$ELEEYE_DIR/eleeye/hash.cpp" \
+  "$ELEEYE_DIR/eleeye/movesort.cpp" \
+  "$ELEEYE_DIR/eleeye/position.cpp" \
+  "$ELEEYE_DIR/eleeye/preeval.cpp" \
+  "$ELEEYE_DIR/eleeye/pregen.cpp" \
+  "$ELEEYE_DIR/eleeye/search.cpp" \
+  "$ELEEYE_DIR/eleeye/ucci.cpp" \
   -s WASM=1 \
   -s ALLOW_MEMORY_GROWTH=1 \
-  -s EXIT_RUNTIME=0 \
-  -s MODULARIZE=0 \
-  -s EXPORTED_RUNTIME_METHODS='["ccall","cwrap","FS"]' \
-  -I"$PROJECT_ROOT/third-party/eleeye/base" \
-  -I"$PROJECT_ROOT/third-party/eleeye/eleeye" \
-  "$PROJECT_ROOT/third-party/eleeye/eleeye/eleeye.cpp" \
-  "$PROJECT_ROOT/third-party/eleeye/eleeye/position.cpp" \
-  "$PROJECT_ROOT/third-party/eleeye/eleeye/search.cpp" \
-  "$PROJECT_ROOT/third-party/eleeye/eleeye/evaluate.cpp" \
-  "$PROJECT_ROOT/third-party/eleeye/eleeye/genmoves.cpp" \
-  "$PROJECT_ROOT/third-party/eleeye/eleeye/hash.cpp" \
-  "$PROJECT_ROOT/third-party/eleeye/eleeye/movesort.cpp" \
-  "$PROJECT_ROOT/third-party/eleeye/eleeye/book.cpp" \
-  "$PROJECT_ROOT/third-party/eleeye/eleeye/preeval.cpp" \
-  "$PROJECT_ROOT/third-party/eleeye/eleeye/pregen.cpp" \
-  "$PROJECT_ROOT/third-party/eleeye/eleeye/ucci.cpp" \
-  "$PROJECT_ROOT/third-party/eleeye/base/pipe.cpp" \
-  -o "$OUT_DIR/eleeye.js"
+  -s MODULARIZE=1 \
+  -s EXPORT_NAME="createEleeyeModule" \
+  -s EXPORTED_FUNCTIONS='["_init_eleeye_engine","_execute_ucci_command","_main"]' \
+  -s EXPORTED_RUNTIME_METHODS='["ccall","cwrap"]' \
+  -o "$WORKER_DIR/eleeye.js"
 
-echo "象眼 WebAssembly 编译完成：$OUT_DIR/eleeye.js 与 $OUT_DIR/eleeye.wasm"
+echo "象眼 WebAssembly 编译完成：$WORKER_DIR/eleeye.js 与 $WORKER_DIR/eleeye.wasm"

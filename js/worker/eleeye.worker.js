@@ -8,7 +8,9 @@ var searchPending = null;
 
 // 配置 Emscripten 导出的全局 Module 钩子
 self.Module = {
+  noInitialRun: true,
   print: function (text) {
+    if (!text) return;
     handleEngineStdoutLine(text);
   },
   printErr: function (text) {

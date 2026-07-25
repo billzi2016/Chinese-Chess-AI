@@ -280,9 +280,14 @@ extern "C" {
       Search.pos.nDistance = 0;
       Search.pos.PreEvaluate();
       Search.nBanMoves = 0;
+    } else if (StrEqvSkip(lp, "go depth ")) {
+      int depth = atoi(lp);
+      if (depth <= 0) depth = 4;
+      Search.nGoMode = GO_MODE_INFINITY;
+      SearchMain(depth);
     } else if (StrEqvSkip(lp, "go movetime ")) {
       int movetime = atoi(lp);
-      if (movetime <= 0) movetime = 5000;
+      if (movetime <= 0) movetime = 1000;
       Search.nGoMode = GO_MODE_TIMER;
       Search.nProperTimer = movetime;
       Search.nMaxTimer = movetime;
