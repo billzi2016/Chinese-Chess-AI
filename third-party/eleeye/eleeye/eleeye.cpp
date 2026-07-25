@@ -29,7 +29,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 #include "hash.h"
 #include "search.h"
 
-const int INTERRUPT_COUNT = 4096; // ËÑË÷Èô¸É½áµãºóµ÷ÓÃÖĞ¶Ï
+const int INTERRUPT_COUNT = 4096; // æœç´¢è‹¥å¹²ç»“ç‚¹åè°ƒç”¨ä¸­æ–­
 
 inline void PrintLn(const char *sz) {
   printf("%s\n", sz);
@@ -81,7 +81,7 @@ int main(void) {
   PrintLn("option newgame type button");
   PrintLn("ucciok");
 
-  // ÒÔÏÂÊÇ½ÓÊÕÖ¸ÁîºÍÌá¹©¶Ô²ßµÄÑ­»·Ìå
+  // ä»¥ä¸‹æ˜¯æ¥æ”¶æŒ‡ä»¤å’Œæä¾›å¯¹ç­–çš„å¾ªç¯ä½“
   while (!Search.bQuit) {
     switch (IdleLine(UcciComm, Search.bDebug)) {
     case UCCI_COMM_ISREADY:
@@ -131,12 +131,12 @@ int main(void) {
         break;
       case UCCI_OPTION_HASHSIZE:
         DelHash();
-        i = 19; // Ğ¡ÓÚ1£¬·ÖÅä0.5MÖÃ»»±í
+        i = 19; // å°äº1ï¼Œåˆ†é…0.5Mç½®æ¢è¡¨
         while (UcciComm.nSpin > 0) {
           UcciComm.nSpin /= 2;
           i ++;
         }
-        NewHash(MAX(i, 24)); // ×îĞ¡µÄÖÃ»»±íÉèÎª16M
+        NewHash(MAX(i, 24)); // æœ€å°çš„ç½®æ¢è¡¨è®¾ä¸º16M
         break;
       case UCCI_OPTION_IDLE:
         switch (UcciComm.Grade) {
@@ -212,16 +212,16 @@ int main(void) {
       case UCCI_GO_TIME_INCREMENT:
         Search.nGoMode = GO_MODE_TIMER;
         if (UcciComm.Go == UCCI_GO_TIME_MOVESTOGO) {
-          // ¶ÔÓÚÊ±¶ÎÖÆ£¬°ÑÊ£ÓàÊ±¼äÆ½¾ù·ÖÅäµ½Ã¿Ò»²½£¬×÷ÎªÊÊµ±Ê±ÏŞ¡£
-          // Ê£Óà²½Êı´Ó1µ½5£¬×î´óÊ±ÏŞÒÀ´ÎÊÇÊ£ÓàÊ±¼äµÄ100%¡¢90%¡¢80%¡¢70%ºÍ60%£¬5ÒÔÉÏ¶¼ÊÇ50%
+          // å¯¹äºæ—¶æ®µåˆ¶ï¼ŒæŠŠå‰©ä½™æ—¶é—´å¹³å‡åˆ†é…åˆ°æ¯ä¸€æ­¥ï¼Œä½œä¸ºé€‚å½“æ—¶é™ã€‚
+          // å‰©ä½™æ­¥æ•°ä»1åˆ°5ï¼Œæœ€å¤§æ—¶é™ä¾æ¬¡æ˜¯å‰©ä½™æ—¶é—´çš„100%ã€90%ã€80%ã€70%å’Œ60%ï¼Œ5ä»¥ä¸Šéƒ½æ˜¯50%
           Search.nProperTimer = UcciComm.nTime / UcciComm.nMovesToGo;
           Search.nMaxTimer = UcciComm.nTime * MAX(5, 11 - UcciComm.nMovesToGo) / 10;
         } else {
-          // ¶ÔÓÚ¼ÓÊ±ÖÆ£¬¼ÙÉèÆå¾Ö»áÔÚ20»ØºÏÄÚ½áÊø£¬Ëã³öÆ½¾ùÃ¿Ò»²½µÄÊÊµ±Ê±ÏŞ£¬×î´óÊ±ÏŞÊÇÊ£ÓàÊ±¼äµÄÒ»°ë
+          // å¯¹äºåŠ æ—¶åˆ¶ï¼Œå‡è®¾æ£‹å±€ä¼šåœ¨20å›åˆå†…ç»“æŸï¼Œç®—å‡ºå¹³å‡æ¯ä¸€æ­¥çš„é€‚å½“æ—¶é™ï¼Œæœ€å¤§æ—¶é™æ˜¯å‰©ä½™æ—¶é—´çš„ä¸€åŠ
           Search.nProperTimer = UcciComm.nTime / 20 + UcciComm.nIncrement;
           Search.nMaxTimer = UcciComm.nTime / 2;
         }
-        // Èç¹ûÊÇºóÌ¨Ë¼¿¼µÄÊ±¼ä·ÖÅä²ßÂÔ£¬ÄÇÃ´ÊÊµ±Ê±ÏŞÉèÎªÔ­À´µÄ1.25±¶
+        // å¦‚æœæ˜¯åå°æ€è€ƒçš„æ—¶é—´åˆ†é…ç­–ç•¥ï¼Œé‚£ä¹ˆé€‚å½“æ—¶é™è®¾ä¸ºåŸæ¥çš„1.25å€
         Search.nProperTimer += (bPonderTime ? Search.nProperTimer / 4 : 0);
         Search.nMaxTimer = MIN(Search.nMaxTimer, Search.nProperTimer * 10);
         SearchMain(UCCI_MAX_DEPTH);
@@ -247,3 +247,47 @@ int main(void) {
   PrintLn("bye");
   return 0;
 }
+
+#ifdef __EMSCRIPTEN__
+#include <emscripten/emscripten.h>
+
+extern "C" {
+  EMSCRIPTEN_KEEPALIVE void init_eleeye_engine() {
+    PreGenInit();
+    NewHash(24);
+    Search.pos.FromFen(cszStartFen);
+    Search.pos.nDistance = 0;
+    Search.pos.PreEvaluate();
+    Search.nBanMoves = 0;
+    Search.bQuit = Search.bBatch = Search.bDebug = false;
+    Search.bUseHash = Search.bUseBook = Search.bNullMove = Search.bKnowledge = true;
+    Search.bIdle = false;
+    Search.nCountMask = INTERRUPT_COUNT - 1;
+    Search.nRandomMask = 0;
+    Search.rc4Random.InitRand();
+  }
+
+  EMSCRIPTEN_KEEPALIVE void execute_ucci_command(const char* szCmd) {
+    if (!szCmd) return;
+    char szBuffer[512];
+    snprintf(szBuffer, sizeof(szBuffer), "%s", szCmd);
+    char *lp = szBuffer;
+
+    if (StrEqv(lp, "isready")) {
+      PrintLn("readyok");
+    } else if (StrEqvSkip(lp, "position fen ")) {
+      Search.pos.FromFen(lp);
+      Search.pos.nDistance = 0;
+      Search.pos.PreEvaluate();
+      Search.nBanMoves = 0;
+    } else if (StrEqvSkip(lp, "go movetime ")) {
+      int movetime = atoi(lp);
+      if (movetime <= 0) movetime = 5000;
+      Search.nGoMode = GO_MODE_TIMER;
+      Search.nProperTimer = movetime;
+      Search.nMaxTimer = movetime;
+      SearchMain(UCCI_MAX_DEPTH);
+    }
+  }
+}
+#endif

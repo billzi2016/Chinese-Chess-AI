@@ -16,6 +16,13 @@ self.Module = {
   },
   onRuntimeInitialized: function () {
     wasmReady = true;
+    if (self.Module && typeof self.Module.ccall === 'function') {
+      try {
+        self.Module.ccall('init_eleeye_engine', null, [], []);
+      } catch (err) {
+        console.warn('调用 init_eleeye_engine 提示:', err);
+      }
+    }
     self.postMessage({ type: 'READY' });
     if (searchPending) {
       executeSearch(searchPending.fen, searchPending.movetime);
@@ -54,11 +61,10 @@ self.onmessage = function (e) {
 // 向 WASM 象眼引擎发送 UCCI 指令
 function sendUCCICmdToEngine(cmd) {
   if (self.Module && typeof self.Module.ccall === 'function') {
-    // 假设通过 ccall 或 stdio 向 UCCI 解释器抛出命令
     try {
-      self.Module.ccall('send_ucci_command', 'number', ['string'], [cmd]);
+      self.Module.ccall('execute_ucci_command', null, ['string'], [cmd]);
     } catch (e) {
-      // 容错处理：当使用标准 printf 时
+      console.error('发送 UCCI 指令到 WASM 引擎失败:', e);
     }
   }
 }
