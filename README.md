@@ -1,4 +1,4 @@
-**English Version** | [中文文档](README_CN.md)
+**English Version** | [中文文档](README_CN.md) | 🌐 **Live Demo**: [https://billzi2016.github.io/Chinese-Chess-AI/](https://billzi2016.github.io/Chinese-Chess-AI/)
 
 # Chinese-Chess-AI (WebAssembly-Powered High-Performance Xiangqi AI)
 
