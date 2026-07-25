@@ -71,6 +71,28 @@ runTest('悔棋 undo 状态恢复', () => {
   assert.strictEqual(game.turn, 'r');
 });
 
+// 6. 测试兵/卒未过河只能直走且不能倒退
+runTest('兵未过河限制直走与不可倒退检测', () => {
+  const q = new Xiangqi();
+  // 中兵 (Row 6, Col 4 -> 58) 进一 (Row 5, Col 4 -> 49) 合法
+  assert.ok(q.isLegalMove(58, 49), '中兵直进一格合法');
+  // 中兵平移 (sq 58 到 sq 59) 在未过河时非法
+  assert.ok(!q.isLegalMove(58, 59), '中兵未过河不可横走');
+  // 中兵退一 (sq 58 到 sq 67) 非法
+  assert.ok(!q.isLegalMove(58, 67), '兵不可倒退');
+});
+
+// 7. 测试炮不吃子需无子阻隔，吃子需隔一子
+runTest('炮不吃子无障碍与吃子隔一子检测', () => {
+  const q = new Xiangqi();
+  // 炮二 (Row 7, Col 1 -> 64) 平五 (Row 7, Col 4 -> 67) 路径中间无障碍合法
+  assert.ok(q.isLegalMove(64, 67), '炮平五无障碍合法');
+  // 炮二进七 (sq 64 到 sq 1 敌马) 中间隔黑炮(sq 19) 恰好 1 子 -> 隔山打炮合法
+  assert.ok(q.isLegalMove(64, 1), '炮隔 1 子打敌马合法');
+  // 炮二进五 (sq 64 到 sq 19 敌炮) 路径中间无隔子直接吃 -> 非法
+  assert.ok(!q.isLegalMove(64, 19), '炮无隔子吃敌炮非法');
+});
+
 console.log(`\n测试汇总: ${passedTests} / ${totalTests} 通过.`);
 if (passedTests !== totalTests) {
   process.exit(1);

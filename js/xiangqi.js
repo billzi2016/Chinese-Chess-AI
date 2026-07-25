@@ -149,8 +149,44 @@
         if (this.board[legSq] !== null) return false; // 别马腿
         return true;
 
-      default:
+      case 'r': // 车：走直线，中间不能有棋子
+      case 'c': // 炮：走直线，移动不吃子中间 0 子，吃子中间隔 1 子
+        if (fromRow !== toRow && fromCol !== toCol) return false;
+        let obstacles = 0;
+        if (fromRow === toRow) {
+          const minCol = Math.min(fromCol, toCol);
+          const maxCol = Math.max(fromCol, toCol);
+          for (let c = minCol + 1; c < maxCol; c++) {
+            if (this.board[fromRow * 9 + c] !== null) obstacles++;
+          }
+        } else {
+          const minRow = Math.min(fromRow, toRow);
+          const maxRow = Math.max(fromRow, toRow);
+          for (let r = minRow + 1; r < maxRow; r++) {
+            if (this.board[r * 9 + fromCol] !== null) obstacles++;
+          }
+        }
+
+        if (piece.type === 'r') {
+          return obstacles === 0;
+        } else { // 炮
+          if (target === null) return obstacles === 0;
+          else return obstacles === 1;
+        }
+
+      case 'p': // 兵 / 卒：只能走一格，不能倒退，未过河不能横走
+        if (dr + dc !== 1) return false;
+        if (piece.color === RED) {
+          if (toRow > fromRow) return false; // 红兵不能向下倒退
+          if (fromRow >= 5 && dc !== 0) return false; // 未过河不能横走
+        } else {
+          if (toRow < fromRow) return false; // 黑卒不能向上倒退
+          if (fromRow <= 4 && dc !== 0) return false; // 未过河不能横走
+        }
         return true;
+
+      default:
+        return false;
     }
   };
 
