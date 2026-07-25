@@ -3,41 +3,38 @@
  * 严格连接真实象眼 WASM 实例与 UCCI 协议，零伪造数据
  */
 
-var wasmReady = false;
+var wasmModule = null;
 var searchPending = null;
 
-// 配置 Emscripten 导出的全局 Module 钩子
-self.Module = {
-  noInitialRun: true,
-  print: function (text) {
-    if (!text) return;
-    handleEngineStdoutLine(text);
-  },
-  printErr: function (text) {
-    console.warn('[ElephantEye WASM Engine Log]', text);
-  },
-  onRuntimeInitialized: function () {
-    wasmReady = true;
-    if (self.Module && typeof self.Module.ccall === 'function') {
-      try {
-        self.Module.ccall('init_eleeye_engine', null, [], []);
-      } catch (err) {
-        console.warn('调用 init_eleeye_engine 提示:', err);
-      }
-    }
-    self.postMessage({ type: 'READY' });
-    if (searchPending) {
-      executeSearch(searchPending.fen, searchPending.movetime);
-      searchPending = null;
-    }
-  }
-};
-
-// 引入编译生成的 Emscripten WASM 胶水代码
+// 使用 Emscripten 工厂模式异步初始化象眼 WASM 模块
 try {
   importScripts('eleeye.js');
+  if (typeof createEleeyeModule === 'function') {
+    createEleeyeModule({
+      noInitialRun: true,
+      print: function (text) {
+        if (!text) return;
+        handleEngineStdoutLine(text);
+      },
+      printErr: function (text) {
+        console.warn('[ElephantEye WASM Engine Log]', text);
+      }
+    }).then(function (mod) {
+      wasmModule = mod;
+      if (typeof wasmModule.ccall === 'function') {
+        wasmModule.ccall('init_eleeye_engine', null, [], []);
+      }
+      self.postMessage({ type: 'READY' });
+      if (searchPending) {
+        executeSearch(searchPending.fen, searchPending.movetime);
+        searchPending = null;
+      }
+    }).catch(function (err) {
+      console.error('象眼 WASM 模块实例化失败:', err);
+    });
+  }
 } catch (e) {
-  console.error('加载 eleeye.js 异常，等待编译产物到位:', e);
+  console.error('加载 eleeye.js 胶水代码失败:', e);
 }
 
 self.onmessage = function (e) {
@@ -45,14 +42,14 @@ self.onmessage = function (e) {
   const type = data.type;
 
   if (type === 'INIT') {
-    if (wasmReady) {
+    if (wasmModule) {
       self.postMessage({ type: 'READY' });
     }
   } else if (type === 'SEARCH') {
     const fen = data.fen;
     const movetime = data.movetime || 5000;
 
-    if (!wasmReady) {
+    if (!wasmModule) {
       searchPending = { fen: fen, movetime: movetime };
     } else {
       executeSearch(fen, movetime);
@@ -62,9 +59,9 @@ self.onmessage = function (e) {
 
 // 向 WASM 象眼引擎发送 UCCI 指令
 function sendUCCICmdToEngine(cmd) {
-  if (self.Module && typeof self.Module.ccall === 'function') {
+  if (wasmModule && typeof wasmModule.ccall === 'function') {
     try {
-      self.Module.ccall('execute_ucci_command', null, ['string'], [cmd]);
+      wasmModule.ccall('execute_ucci_command', null, ['string'], [cmd]);
     } catch (e) {
       console.error('发送 UCCI 指令到 WASM 引擎失败:', e);
     }
