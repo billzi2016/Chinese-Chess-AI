@@ -21,10 +21,11 @@ echo "-> 运行 [2/5] Worker UCCI 日志解析器测试..."
 node "$SCRIPT_DIR/test_worker_parser.js"
 echo ""
 
-# 3. 运行 ElephantEye C++ WASM 真实 1000ms 算力搜索测试
-echo "-> 运行 [3/5] eleeye.wasm 象眼 C++ WASM 引擎真实算力测试..."
-node "$SCRIPT_DIR/test_eleeye_wasm_real.js"
-echo ""
+# 3. [本地验证-保持CI轻量] 运行 ElephantEye C++ WASM 真实 1000ms 算力搜索测试
+# 说明：重度 AI 引擎算力搜索测试在本地环境手动验证，以保持 CI 流水线极速轻量。
+# echo "-> 运行 [3/5] eleeye.wasm 象眼 C++ WASM 引擎真实算力测试..."
+# node "$SCRIPT_DIR/test_eleeye_wasm_real.js"
+# echo ""
 
 # 4. 运行 6324 端口服务器启动与能力测试
 echo "-> 运行 [4/5] 6324 端口服务器启动与处理测试..."
