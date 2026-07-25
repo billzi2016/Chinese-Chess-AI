@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function () {
       if (data.type === 'INFO') {
         latestInfo = data.info;
         if (latestInfo) {
-          updateAiCurrentStatus(`象眼 AI 深度搜索中... 深度:${latestInfo.depth || '-'}, 节点:${latestInfo.nodes || '-'}, 耗时:${latestInfo.time || '-'}ms`);
+          updateAiCurrentStatus(`象眼 AI 深度搜索中... 深度:${latestInfo.depth || '-'}`);
         }
       } else if (data.type === 'BEST_MOVE') {
         handleAiBestMove(data.move, latestInfo);
@@ -105,10 +105,10 @@ document.addEventListener('DOMContentLoaded', function () {
     // 清空侧边栏 AI 评估日志表格
     clearAiStatsTable();
     if (gameMode === 'eve') {
-      updateAiCurrentStatus('机机对战启动。象眼 AI 正在思考红方第一步...');
+      updateAiCurrentStatus('机机对战启动。AI 正在思考红方第一步...');
       triggerAiThink();
     } else if (gameMode === 'pve' && playerSide === 'b') {
-      updateAiCurrentStatus('电脑执红先走。象眼 AI 正在思考红方第一步...');
+      updateAiCurrentStatus('电脑执红先走。AI 正在思考红方第一步...');
       triggerAiThink();
     } else {
       updateAiCurrentStatus('对局已开始。等待执红玩家落子...');
@@ -135,7 +135,7 @@ document.addEventListener('DOMContentLoaded', function () {
       appendMoveToTable('玩家', moveResult, null);
 
       if (gameMode === 'pve') {
-        updateAiCurrentStatus('玩家落子完成。象眼 AI 正在思考中...');
+        updateAiCurrentStatus('玩家落子完成。AI 正在思考中...');
         triggerAiThink();
       }
     }
