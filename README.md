@@ -116,6 +116,6 @@ This project is built upon the following open-source contributions:
 
 ## 7. Open Source License
 
-This project is licensed under the MIT License.
+This project as a whole is licensed under the **GNU Lesser General Public License v2.1 (LGPL v2.1)**, consistent with the core ElephantEye engine license. Third-party components retain their respective original licenses (LGPL v2.1, BSD 2-Clause, MIT).
 
-The overall project adheres strictly to the **LGPL v2.1** open-source license consistent with the original author of the ElephantEye engine. All third-party copyrights belong to their respective authors and abide by their original licenses (LGPL v2.1, BSD 2-Clause, MIT).
+Please refer to the [LICENSE](LICENSE) file in the root directory for the complete license text.

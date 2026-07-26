@@ -118,8 +118,6 @@ python3 server.py
 
 ## 7. 开源许可证与合规声明
 
-本项目采用 MIT 许可证开源。
+本项目整体遵循与核心象眼引擎 (ElephantEye) 原作者保持一致的 **GNU Lesser General Public License v2.1 (LGPL v2.1)** 开源协议。所有引入的第三方开源项目版权均归原作者所有，并各自遵循其原生的开源授权许可（LGPL v2.1, BSD 2-Clause, MIT）。
 
-本项目整体遵循与象眼引擎原作者保持完全一致的 **LGPL v2.1** 开源协议。所有引入的第三方开源项目版权均归原作者所有，并各自遵循其原生的开源授权许可（LGPL v2.1, BSD 2-Clause, MIT）。
-
-完整协议全文请参阅项目根目录下的 `LICENSE` 文件。
+完整协议全文请参阅项目根目录下的 [LICENSE](LICENSE) 文件。
